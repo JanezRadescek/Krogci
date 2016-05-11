@@ -7,7 +7,19 @@ import javax.imageio.ImageIO;
 
 public class OrgSlika 
 {
-	private BufferedImage image;
+	protected BufferedImage image;
+	
+	public OrgSlika(String path) 
+	{
+		try 
+	    {                
+	       image = ImageIO.read(new File(path));
+	    } 
+		catch (IOException ex) 
+		{
+	           System.out.print("ne najde slike");
+	    }
+	}
 	
 	void novaSlika(String path)
 	{

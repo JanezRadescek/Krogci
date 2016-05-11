@@ -1,7 +1,7 @@
 import java.awt.EventQueue;
 
 
-public class Hrèek 
+public class Hrcek 
 {
 	/**
 	 * Launch the application.
