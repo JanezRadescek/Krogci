@@ -1,5 +1,4 @@
 
-
 public class Metrika 
 {
 	public static int razdalja(Krogec k, int x, int y)

@@ -17,7 +17,7 @@ public class OrgSlika
 	    } 
 		catch (IOException ex) 
 		{
-	           System.out.print("ne najde slike");
+	           System.out.println("ne najde slike");
 	    }
 	}
 	

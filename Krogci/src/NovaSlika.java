@@ -1,8 +1,7 @@
-import java.awt.image.BufferedImage;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 public class NovaSlika 
 {
-	Vector<Krogec> slika = new Vector<Krogec>();
+	ArrayList<Krogec> slika = new ArrayList<Krogec>();
 }
