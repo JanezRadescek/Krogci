@@ -10,23 +10,23 @@ public class AlgManjsanje
 	int trenutniR;
 	int visina;
 	int sirina;
-	int odstopanjeRGB;
-	int odstopanjePix;
+	int odstopanjeRGB; //koliko se lahko pixel razlikuje da je še vredu
+	int odstopanjeProcent; //procenti dovoljenega  števila napaènih pixlov
 	Color povprecje;
 	int xsidro;
 	int ysidro;
 	boolean mreza [][];
 	
-	public AlgManjsanje(String path, int zacetniR, int odstopanjeRGB, int odstopanjePix) 
+	public AlgManjsanje(OrgSlika orgSlika, int zacetniR, int odstopanjeRGB, int odstopanjePix) 
 	{
-		orgSlika = new OrgSlika(path);
+		this.orgSlika = orgSlika;
 		novaSlika = new NovaSlika();
 		
 		trenutniR = zacetniR;
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
 		this.odstopanjeRGB = odstopanjeRGB;
-		this.odstopanjePix = odstopanjePix;
+		this.odstopanjeProcent = odstopanjePix;
 		xsidro = 0;
 		ysidro = 0;
 		mreza = new boolean[visina][sirina];
@@ -96,6 +96,8 @@ public class AlgManjsanje
 	void poskusiNarisati()
 	{
 		int i = 0;
+		int odstopanjeStevilo = (int)((odstopanjeProcent/100) 
+				* (4/3.14) * trenutniR);
 		for(int x = xsidro; x < xsidro + 2*trenutniR; x++)
 		{
 			for (int y = ysidro; y < ysidro + 2*trenutniR; y++)
@@ -103,7 +105,7 @@ public class AlgManjsanje
 				if(! ustreza(x,y))
 					{
 						i++;
-						if(i==odstopanjePix) return;
+						if(i==odstopanjeStevilo) return;
 					}
 				
 			}

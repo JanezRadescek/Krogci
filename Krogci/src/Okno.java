@@ -13,12 +13,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 
 public class Okno extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField path;
-
+	private OrgSlika orgSlika;
+	private NovaSlika novaSlika;
 
 	/**
 	 * Create the frame.
@@ -37,7 +39,9 @@ public class Okno extends JFrame {
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(path.getText());
-				AlgManjsanje algoritem = new AlgManjsanje(path.getText(), 20);
+				orgSlika = new OrgSlika(path.getText());
+				AlgManjsanje algoritem = new AlgManjsanje(orgSlika, 20, 100100100, 10);
+				
 			}
 		});
 		mnFile.add(mntmLoad);
@@ -48,8 +52,13 @@ public class Okno extends JFrame {
 		JMenu mnSettings = new JMenu("Settings");
 		menuBar.add(mnSettings);
 		
-		JMenuItem mntmStart = new JMenuItem("Start");
-		mnSettings.add(mntmStart);
+		JButton btnStart = new JButton("Start");
+		btnStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		menuBar.add(btnStart);
 		
 		path = new JTextField();
 		menuBar.add(path);
