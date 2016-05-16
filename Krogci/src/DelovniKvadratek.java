@@ -2,29 +2,15 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 
-public class AlgManjsanje 
+public class DelovniKvadratek 
 {
-	OrgSlika orgSlika;
-	NovaSlika novaSlika;
-	
-	int zacetniR;
-	int visina;
-	int sirina;
-	int odstopanje;
 	Color povprecje;
-	int xsidro;
-	int ysidro;
 	
-	public AlgManjsanje(String path, int R) 
+	
+	public DelovniKvadratek() 
 	{
-		orgSlika = new OrgSlika(path);
-		novaSlika = new NovaSlika();
-		zacetniR = R;
-		visina = orgSlika.image.getHeight();
-		sirina = orgSlika.image.getWidth();
+		
 	}
-	
-	
 	
 	void povprecje(int x1, int y1, int a)
 	{
@@ -57,16 +43,6 @@ public class AlgManjsanje
 		
 	}
 	
-	boolean ustreza(int x, int y)
-	{
-		Color c = new Color(orgSlika.image.getRGB(x, y));
-		int red = Math.abs(c.getRed() - povprecje.getRed());
-		int green = Math.abs(c.getGreen() - povprecje.getGreen());
-		int blue = Math.abs(c.getBlue() - povprecje.getBlue());
-		return (red + green + blue < odstopanje);
-		
-	}
 	
-	
-	
+
 }
