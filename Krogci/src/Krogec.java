@@ -3,6 +3,7 @@ import java.awt.Color;
 
 public class Krogec 
 {
+	//x,y sta sidro zgoraj levo, središèe je torej v x+r,y+r
 	int x;
 	int y;
 	int r;

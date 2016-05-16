@@ -7,33 +7,59 @@ public class AlgManjsanje
 	OrgSlika orgSlika;
 	NovaSlika novaSlika;
 	
-	int zacetniR;
+	int trenutniR;
 	int visina;
 	int sirina;
-	int odstopanje;
+	int odstopanjeRGB;
+	int odstopanjePix;
 	Color povprecje;
 	int xsidro;
 	int ysidro;
+	boolean mreza [][];
 	
-	public AlgManjsanje(String path, int R) 
+	public AlgManjsanje(String path, int zacetniR, int odstopanjeRGB, int odstopanjePix) 
 	{
 		orgSlika = new OrgSlika(path);
 		novaSlika = new NovaSlika();
-		zacetniR = R;
+		
+		trenutniR = zacetniR;
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
+		this.odstopanjeRGB = odstopanjeRGB;
+		this.odstopanjePix = odstopanjePix;
+		xsidro = 0;
+		ysidro = 0;
+		mreza = new boolean[visina][sirina];
+		
 	}
 	
+	/*
+	void novoSidro()
+	{
+		for (int i = 0; i<visina; i++)
+		{
+			for(int j=0; j<sirina; j++)
+			{
+				if (mreza[i][j] == true) continue;
+				else
+				{
+					
+				}
+			}
+				
+		}
+		//tu zmanšaj radij in pojdi od zaèetka razen èe je r<10, pravtako izriši kroge, ki smo jih našl do sedaj
+	}
+	*/
 	
-	
-	void povprecje(int x1, int y1, int a)
+	void povprecje(int x1, int y1)
 	{
 		
 		ArrayList<Integer> tabelaBarvInt = new ArrayList<Integer>();
-		int x2 = x1+a;
-		int y2 = y1+a;
-		int xsredisce = (int)((x1+x2)/2);
-		int ysredisce = (int)((y1+y2)/2);
+		int x2 = x1+2*trenutniR;
+		int y2 = y1+2*trenutniR;
+		int xsredisce = x1 + trenutniR;
+		int ysredisce = y1 + trenutniR;
 		long sumr = 0, sumg = 0, sumb = 0;
 		int n = 0;
 		
@@ -41,7 +67,7 @@ public class AlgManjsanje
 		{
 			for(int y=y1; y<=y2; y++)
 			{
-				if (2 * Metrika.razdalja(x, y, xsredisce, ysredisce) <= a )
+				if (2 * Metrika.razdalja(x, y, xsredisce, ysredisce) <= 2*trenutniR )
 				{
 					Color c = new Color(orgSlika.image.getRGB(x, y));
 					sumr += c.getRed();
@@ -63,10 +89,43 @@ public class AlgManjsanje
 		int red = Math.abs(c.getRed() - povprecje.getRed());
 		int green = Math.abs(c.getGreen() - povprecje.getGreen());
 		int blue = Math.abs(c.getBlue() - povprecje.getBlue());
-		return (red + green + blue < odstopanje);
+		return (red + green + blue < odstopanjeRGB);
 		
 	}
 	
+	void poskusiNarisati()
+	{
+		int i = 0;
+		for(int x = xsidro; x < xsidro + 2*trenutniR; x++)
+		{
+			for (int y = ysidro; y < ysidro + 2*trenutniR; y++)
+			{
+				if(! ustreza(x,y))
+					{
+						i++;
+						if(i==odstopanjePix) return;
+					}
+				
+			}
+		}
+		narisiKrog();
+	}
 	
+	void narisiKrog()
+	{
+		int xsredisce = xsidro+trenutniR;
+		int ysredisce = ysidro+trenutniR;
+		novaSlika.slika.add(new Krogec(xsidro,ysidro,trenutniR,povprecje));
+		for (int x=xsidro; x < xsidro + 2*trenutniR; x++)
+		{
+			for(int y=ysidro; y < ysidro + 2*trenutniR; y++)
+			{
+				if(Metrika.razdalja(x, y, xsredisce, ysredisce) <= trenutniR)
+				{
+					mreza[x][y] = true;
+				}
+			}
+		}
+	}
 	
 }
