@@ -8,14 +8,16 @@ public class AlgManjsanje
 	NovaSlika novaSlika;
 	
 	int trenutniR;
+	int minR;
 	int visina;
 	int sirina;
 	int odstopanjeRGB; //koliko se lahko pixel razlikuje da je še vredu
 	int odstopanjeProcent; //procenti dovoljenega  števila napaènih pixlov
-	Color povprecje;
+	Color povprecnaBarva;
 	int xsidro;
 	int ysidro;
 	boolean mreza [][];
+	boolean konec;
 	
 	public AlgManjsanje(OrgSlika orgSlika, int zacetniR, int odstopanjeRGB, int odstopanjePix) 
 	{
@@ -23,6 +25,7 @@ public class AlgManjsanje
 		novaSlika = new NovaSlika();
 		
 		trenutniR = zacetniR;
+		minR = 5;
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
 		this.odstopanjeRGB = odstopanjeRGB;
@@ -30,8 +33,34 @@ public class AlgManjsanje
 		xsidro = 0;
 		ysidro = 0;
 		mreza = new boolean[visina][sirina];
+		konec = false;
 		
 	}
+	
+	void glavna()
+	{
+		//novoSidro();
+		zanka();
+		
+		
+	}
+	
+	
+	void zanka()
+	{
+		for (;trenutniR > minR; trenutniR -= 5)
+		{
+			povprecje();
+			if (poskusiNarediti())
+			{
+				narediKrog();
+				return;
+			}
+		}
+		
+	}
+	
+	
 	
 	/*
 	void novoSidro()
@@ -48,24 +77,24 @@ public class AlgManjsanje
 			}
 				
 		}
-		//tu zmanšaj radij in pojdi od zaèetka razen èe je r<10, pravtako izriši kroge, ki smo jih našl do sedaj
+		
+		konec = true;
 	}
 	*/
 	
-	void povprecje(int x1, int y1)
+	void povprecje()
 	{
 		
-		ArrayList<Integer> tabelaBarvInt = new ArrayList<Integer>();
-		int x2 = x1+2*trenutniR;
-		int y2 = y1+2*trenutniR;
-		int xsredisce = x1 + trenutniR;
-		int ysredisce = y1 + trenutniR;
+		int x2 = xsidro+2*trenutniR;
+		int y2 = ysidro+2*trenutniR;
+		int xsredisce = xsidro + trenutniR;
+		int ysredisce = ysidro + trenutniR;
 		long sumr = 0, sumg = 0, sumb = 0;
 		int n = 0;
 		
-		for(int x=x1; x<=x2; x++)
+		for(int x=xsidro; x<=x2; x++)
 		{
-			for(int y=y1; y<=y2; y++)
+			for(int y=ysidro; y<=y2; y++)
 			{
 				if (2 * Metrika.razdalja(x, y, xsredisce, ysredisce) <= 2*trenutniR )
 				{
@@ -79,21 +108,21 @@ public class AlgManjsanje
 			}
 		}
 		
-		povprecje = new Color(sumr/n, sumg/n, sumb/n);
+		povprecnaBarva = new Color(sumr/n, sumg/n, sumb/n);
 		
 	}
 	
 	boolean ustreza(int x, int y)
 	{
 		Color c = new Color(orgSlika.image.getRGB(x, y));
-		int red = Math.abs(c.getRed() - povprecje.getRed());
-		int green = Math.abs(c.getGreen() - povprecje.getGreen());
-		int blue = Math.abs(c.getBlue() - povprecje.getBlue());
+		int red = Math.abs(c.getRed() - povprecnaBarva.getRed());
+		int green = Math.abs(c.getGreen() - povprecnaBarva.getGreen());
+		int blue = Math.abs(c.getBlue() - povprecnaBarva.getBlue());
 		return (red + green + blue < odstopanjeRGB);
 		
 	}
 	
-	void poskusiNarisati()
+	boolean poskusiNarediti()
 	{
 		int i = 0;
 		int odstopanjeStevilo = (int)((odstopanjeProcent/100) 
@@ -105,19 +134,19 @@ public class AlgManjsanje
 				if(! ustreza(x,y))
 					{
 						i++;
-						if(i==odstopanjeStevilo) return;
+						if(i==odstopanjeStevilo) return false;
 					}
 				
 			}
 		}
-		narisiKrog();
+		return true;
 	}
 	
-	void narisiKrog()
+	void narediKrog()
 	{
 		int xsredisce = xsidro+trenutniR;
 		int ysredisce = ysidro+trenutniR;
-		novaSlika.slika.add(new Krogec(xsidro,ysidro,trenutniR,povprecje));
+		novaSlika.slika.add(new Krogec(xsidro,ysidro,trenutniR,povprecnaBarva));
 		for (int x=xsidro; x < xsidro + 2*trenutniR; x++)
 		{
 			for(int y=ysidro; y < ysidro + 2*trenutniR; y++)

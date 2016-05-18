@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -31,5 +32,10 @@ public class OrgSlika
 		{
 	           System.out.print("ne najde slike");
 	    }
+	}
+	
+	void narisi(Graphics g)
+	{
+		g.drawImage(image, 0, 0, null);
 	}
 }
