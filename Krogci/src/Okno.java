@@ -23,6 +23,7 @@ public class Okno extends JFrame {
 	private JTextField path;
 	private OrgSlika orgSlika;
 	private NovaSlika novaSlika;
+	private AlgManjsanje algoritem;
 
 	/**
 	 * Create the frame.
@@ -58,8 +59,9 @@ public class Okno extends JFrame {
 				panel.setPreferredSize(velikost);
 				orgSlika.narisi(g);
 				pack();
-				AlgManjsanje algoritem = new AlgManjsanje(orgSlika, 20, 100100100, 10);
-				
+				algoritem = new AlgManjsanje(orgSlika, 40, 10, 10);
+				novaSlika = algoritem.novaSlika;
+				novaSlika.narisi(g);
 			}
 		});
 		mnFile.add(mntmLoad);
@@ -73,6 +75,7 @@ public class Okno extends JFrame {
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Graphics g = panel.getGraphics();
 				
 			}
 		});

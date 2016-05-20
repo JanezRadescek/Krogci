@@ -10,7 +10,7 @@ public class Test {
 		String c = a+b;
 		
 		
-		
+		System.out.println(100/2/5);
 		
 		
 	}
