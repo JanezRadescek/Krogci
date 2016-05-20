@@ -8,13 +8,13 @@ public class AlgManjsanje
 	public OrgSlika orgSlika;
 	public NovaSlika novaSlika;
 	
-	private int maxR;
+	private final int maxR;
 	private int trenutniR;
-	private int minR;
-	private int visina;
-	private int sirina;
-	private int odstopanjeRGB; //koliko se lahko pixel razlikuje da je še vredu
-	private int odstopanjePix; //procenti dovoljenega  števila napaènih pixlov
+	private final int minR;
+	private final int visina;
+	private final int sirina;
+	private final int odstopanjeRGB; //koliko se lahko pixel razlikuje da je še vredu
+	private final int odstopanjePix; //procenti dovoljenega  števila napaènih pixlov
 	private Color povprecnaBarva;
 	private int xsidro;
 	private int ysidro;
@@ -50,7 +50,11 @@ public class AlgManjsanje
 		konecSlike = false;
 		smoNarisali = false;
 		
+		System.out.println(this.maxR);
+		
 		glavna();
+		
+		System.out.println("za glavno");
 		
 	}
 	
@@ -61,6 +65,7 @@ public class AlgManjsanje
 			novoSidro();
 			if (konecSlike)
 			{
+				System.out.println(ymin);
 				if (smoNarisali)
 				{
 					konecSlike = false;
@@ -92,6 +97,7 @@ public class AlgManjsanje
 			
 			if (poskusiNarediti())
 			{
+				System.out.println("trenutni radij" + trenutniR);
 				narediKrog();
 				return;
 			}
@@ -112,11 +118,14 @@ public class AlgManjsanje
 			{
 				if (! mreza[xkandidat][y])
 				{
-					//èe najdemo lepga bo vredu èe je pa tak da se bo na desni zaletu bo pa krogec mobu premaknt kandidata
+					//System.out.println("išèemo sidro  na " + xkandidat + " " + y);
 					if (poskusiMin(y)) 
 					{
+						
 						xsidro = xkandidat;
 						ysidro = y;
+						
+						System.out.println("bomo vsaj min na " + xsidro + " " + ysidro);
 						
 						smoNarisali = true;
 						return;
@@ -132,6 +141,7 @@ public class AlgManjsanje
 		
 	}
 	
+	//najde samo èrno ??? zaenkrat hoèmo to zato da vidmo èe novoSidro dela.
 	private void povprecje()
 	{
 		
@@ -155,7 +165,7 @@ public class AlgManjsanje
 				}
 			}
 		}
-		
+		System.out.println("povprecna " + (sumr/n/255) + " " + (sumg/n/255) + " " + sumb/n/255 );
 		povprecnaBarva = new Color(sumr/n/255, sumg/n/255, sumb/n/255);
 		
 	}
@@ -201,12 +211,14 @@ public class AlgManjsanje
 		{
 			for (int y = ysidro; y < ysidro + 2*trenutniR; y++)
 			{
-				if(! ustreza(x,y))
+				if(Metrika.razdalja(x, y, xsidro+trenutniR, ysidro+trenutniR) <= trenutniR)
+				{
+					if(! ustreza(x,y))
 					{
 						i++;
-						if(i==odstopanjeStevilo) return false;
+						if(i>=odstopanjeStevilo) return false;
 					}
-				
+				}
 			}
 		}
 		return true;
@@ -214,6 +226,7 @@ public class AlgManjsanje
 	
 	private void narediKrog()
 	{
+		System.out.println("naredimo krog " + xsidro + " " + ysidro + " radij " + trenutniR);
 		int xsredisce = xsidro+trenutniR;
 		int ysredisce = ysidro+trenutniR;
 		novaSlika.slika.add(new Krogec(xsidro,ysidro,trenutniR,povprecnaBarva));
@@ -230,8 +243,11 @@ public class AlgManjsanje
 		}
 		
 		yNasledniMin.add(ysidro + 2*trenutniR);
-		trenutniR = maxR;
 		xkandidat += 2*trenutniR;
+		
+		trenutniR = this.maxR;
+		
+		System.out.println("kandidatx , treR" + xkandidat + " " + trenutniR);
 		if (xkandidat >= sirina - minR)
 		{
 			xkandidat = 0;

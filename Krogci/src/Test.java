@@ -1,3 +1,4 @@
+import java.awt.Color;
 
 public class Test {
 
@@ -10,7 +11,7 @@ public class Test {
 		String c = a+b;
 		
 		
-		System.out.println(100/2/5);
+		System.out.println(new Color(100,100,100));
 		
 		
 	}

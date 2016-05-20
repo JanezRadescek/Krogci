@@ -59,7 +59,7 @@ public class Okno extends JFrame {
 				panel.setPreferredSize(velikost);
 				orgSlika.narisi(g);
 				pack();
-				algoritem = new AlgManjsanje(orgSlika, 40, 10, 10);
+				algoritem = new AlgManjsanje(orgSlika, 30, 10, 10);
 				novaSlika = algoritem.novaSlika;
 				novaSlika.narisi(g);
 			}
