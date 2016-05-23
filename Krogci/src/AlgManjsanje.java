@@ -112,7 +112,7 @@ public class AlgManjsanje
 	
 	private void novoSidro()
 	{
-		while(xkandidat < sirina - minR)
+		while(xkandidat < sirina - minR) //vazno za na konc, za zadnje piksle
 		{
 			for (int y = ymin; y<visina ; y++)
 			{
@@ -250,7 +250,7 @@ public class AlgManjsanje
 		System.out.println("kandidatx , treR" + xkandidat + " " + trenutniR);
 		if (xkandidat >= sirina - minR)
 		{
-			xkandidat = 0;
+			konecSlike = true;
 			ymin = Collections.min(yNasledniMin);
 		}
 	}
