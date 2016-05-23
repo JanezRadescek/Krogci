@@ -52,6 +52,7 @@ public class AlgManjsanje2
 		System.out.println("za glavno");
 	}
 
+	//išèe nove krogce in jih nariše dokler ne pride do konca
 	private void glavna() 
 	{
 		while(! konec)
@@ -68,7 +69,7 @@ public class AlgManjsanje2
 		}
 	}
 
-	
+	// poišèe x,y kjer bomo lahko zagotovo naredili vsaj min krog
 	private void novoSidro() 
 	{
 		while(xkandidat < sirina - minR)
@@ -93,6 +94,7 @@ public class AlgManjsanje2
 		
 	}
 	
+	//ko pridemo do konca vrstice je lahko konec ali pa so kašni predeli ostali
 	private void konecVrstice() 
 	{
 		if(smoNarisali)
@@ -109,19 +111,22 @@ public class AlgManjsanje2
 		
 	}
 
+	//sidro ni znano
+	//preveri èe je prostora vsaj za min krog
 	private boolean lahkoMin() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	//sidro je znano
+	//zmanjšuje radij dokler ne najde pravega, èe ni drugega min vseeno nariše.
 	private void manjsajKrog() 
 	{
 		while(trenutniR >= minR)
 		{
 			if(niObdelano())
 			{
-				izracunajPovprecnoBarvo(ysidro);
-				if(barvnoUjemanje())
+				if(barvniPogoji())
 				{
 					narediKrog();
 					return;
@@ -130,33 +135,52 @@ public class AlgManjsanje2
 			trenutniR -= minR;
 		}
 		
-		izracunajPovprecnoBarvo(ysidro);
+		izracunajPovprecnoBarvo();
 		narediKrog();
 		
 	}
 
+	//sidro je znano
+	//naredi Krog :D
 	private void narediKrog() 
 	{
 		novaSlika.slika.add(new Krogec(xsidro, ysidro, trenutniR, povprecnaBarva));
 	}
 
-	private boolean barvnoUjemanje() {
-		// TODO Auto-generated method stub
+	//sidro je znano
+	// èe èe trenutni krog zadostuje barvnim pogojem
+	private boolean barvniPogoji() 
+	{
+		izracunajPovprecnoBarvo();
+		
+		for(int x = xsidro; x<= xsidro + 2*trenutniR; x++)
+		{
+			for(int y = ysidro; y<= ysidro + 2*trenutniR; y++)
+			{
+				
+			}
+				
+		}
+		
 		return false;
 	}
 
+	//sidro je znano
+	//preveri èe trenutni krog ne leži na kakšnem že narejenm krogu
 	private boolean niObdelano() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	private void izracunajPovprecnoBarvo(int ysid) 
+	//sidro je znano
+	//povpreèna barva trenutnega kroga
+	private void izracunajPovprecnoBarvo() 
 	{
 		int red = 0, green = 0, blue = 0;
 		int n = 0;
-		for(int x = xkandidat; x <= xkandidat + 2*trenutniR; x++)
+		for(int x = xsidro; x <= xsidro + 2*trenutniR; x++)
 		{
-			for(int y = ysid; y<= ysid + 2*trenutniR; y++)
+			for(int y = ysidro; y<= ysidro + 2*trenutniR; y++)
 			{
 				if (Metrika.razdalja(x, y, x+trenutniR, y+trenutniR) <= trenutniR)
 				{
