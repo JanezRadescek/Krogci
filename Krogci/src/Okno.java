@@ -59,7 +59,7 @@ public class Okno extends JFrame {
 				//panel.setPreferredSize(velikost);
 				//orgSlika.narisi(g);
 				pack();
-				algoritem = new Algoritem2(orgSlika, 30, 10, 10);
+				algoritem = new Algoritem2(orgSlika, 30, 10, 10, g);
 				novaSlika = algoritem.novaSlika;
 				novaSlika.narisi(g);
 				//algoritem.narisi(g);
@@ -79,6 +79,7 @@ public class Okno extends JFrame {
 				String text = path.getText();
 				String pot = "C:\\Users\\MaliMsi\\Desktop\\projektslike\\";
 				pot = pot.concat(text);
+				pot = pot.concat(".jpg");
 				System.out.println(pot);
 				orgSlika = new OrgSlika(pot);
 				//Graphics g = panel.getGraphics();

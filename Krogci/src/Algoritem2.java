@@ -22,10 +22,11 @@ public class Algoritem2 {
 	public Color rdeca;
 	public Color modra;
 	public Color povprecnaB;
+	public Graphics grap;
 	
 	private boolean mreza [][];
 		
-	public Algoritem2(OrgSlika orgSlika, int maxR, int odstopanjeRGB, int odstopanjePix) 
+	public Algoritem2(OrgSlika orgSlika, int maxR, int odstopanjeRGB, int odstopanjePix, Graphics grap) 
 	{
 		this.orgSlika = orgSlika;
 		novaSlika = new NovaSlika();
@@ -38,6 +39,7 @@ public class Algoritem2 {
 		
 		rdeca = new Color(255, 0, 0);
 		modra = new Color(0,255,0);
+		this.grap = grap;
 		
 		mreza = new boolean[sirina][visina]; //v mrezo vpisemo vse vrednosti true, kar pomeni, da imamo prosto mesto za risanje krogca
 		for(int i = 0; i < sirina; i++)
@@ -66,6 +68,7 @@ public class Algoritem2 {
 					if (preveriOdstopanje())
 					{
 						DodajKrog();
+						novaSlika.narisi(this.grap);
 					}
 				}
 				
@@ -81,6 +84,7 @@ public class Algoritem2 {
 				if (preveriOdstopanje())
 				{
 					DodajKrog();
+					novaSlika.narisi(this.grap);
 				}
 			}
 
@@ -96,6 +100,7 @@ public class Algoritem2 {
 				if (preveriOdstopanje())
 				{
 					DodajKrog();
+					novaSlika.narisi(this.grap);
 				}
 			}
 
@@ -212,7 +217,7 @@ public class Algoritem2 {
 					odstop += Math.abs(alpha - pA);
 					
 					
-					if (odstop > 20)
+					if (odstop > 10)
 					{
 						stevecOdstopanj += 1;
 					}
@@ -227,7 +232,7 @@ public class Algoritem2 {
 		double procentOdstopa = (stevecOdstopanj / (double) stevec);
 		//System.out.println(procentOdstopa);
 		
-		if (procentOdstopa < 0.3)
+		if (procentOdstopa < 0.1)
 		{
 			return true;
 		}
