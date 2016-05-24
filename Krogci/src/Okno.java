@@ -50,13 +50,13 @@ public class Okno extends JFrame {
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(path.getText());
-				orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
+				//orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
 				Graphics g = panel.getGraphics();
 				
-				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
+				//Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
 				
 				//panel.setSize(orgSlika.image.getHeight(), orgSlika.image.getWidth());
-				panel.setPreferredSize(velikost);
+				//panel.setPreferredSize(velikost);
 				//orgSlika.narisi(g);
 				pack();
 				algoritem = new Algoritem2(orgSlika, 30, 10, 10);
@@ -75,7 +75,12 @@ public class Okno extends JFrame {
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Graphics g = panel.getGraphics();
+				orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
+				//Graphics g = panel.getGraphics();
+				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
+				panel.setPreferredSize(velikost);
+				pack();
+				
 				
 			}
 		});
