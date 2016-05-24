@@ -14,7 +14,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
+
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
 public class Okno extends JFrame {
@@ -68,14 +73,37 @@ public class Okno extends JFrame {
 		mnFile.add(mntmLoad);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				BufferedImage fileSlika = new BufferedImage(orgSlika.image.getWidth(), orgSlika.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			    Graphics gg = fileSlika.getGraphics();
+			    novaSlika.narisi(gg);
+			    try 
+			    {
+			    	System.out.println("shranjuje");
+			    	ImageIO.write(fileSlika, "PNG", new File("yourImageName.PNG"));
+			    } 
+			    catch (IOException e1)
+			    {
+			    	System.out.println("ne shrani");
+			    	e1.printStackTrace();
+			    }
+			}
+			
+		});
+		
 		mnFile.add(mntmSave);
 		
 		JMenu mnSettings = new JMenu("Settings");
 		menuBar.add(mnSettings);
 		
 		JButton btnStart = new JButton("Start");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnStart.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				String text = path.getText();
 				String pot = "C:\\Users\\MaliMsi\\Desktop\\projektslike\\";
 				pot = pot.concat(text);

@@ -59,7 +59,7 @@ public class Algoritem2 {
 		for(;trenutniR >= minimalniR + 4; trenutniR -= 2)
 		{
 			
-			for(int i = 0; i < (zacetniR - trenutniR)*(zacetniR - trenutniR)*100; i++)
+			for(int i = 0; i < (zacetniR - trenutniR)*(zacetniR - trenutniR)*50; i++)
 			{
 				novoSidro();
 				if (preveriSidro())
@@ -75,17 +75,29 @@ public class Algoritem2 {
 			}
 		}
 		trenutniR = 4;
-		for (int j = 0; j < 20000; j++)
+		for (int j = 0; j < 200000; j++)
 		{
 			novoSidro();
 			if (preveriSidro())
 			{
 				povprecnaBarva();
-				if (preveriOdstopanje())
-				{
-					DodajKrog();
-					novaSlika.narisi(this.grap);
-				}
+				
+				DodajKrog();
+				novaSlika.narisi(this.grap);
+				
+			}
+
+		}
+		
+		trenutniR = 3;
+		for (int j = 0; j < 500000; j++)
+		{
+			novoSidro();
+			if (preveriSidro())
+			{
+				povprecnaBarva();
+				DodajKrog();
+				novaSlika.narisi(this.grap);
 			}
 
 		}
@@ -97,14 +109,12 @@ public class Algoritem2 {
 			if (preveriSidro())
 			{
 				povprecnaBarva();
-				if (preveriOdstopanje())
-				{
-					DodajKrog();
-					novaSlika.narisi(this.grap);
-				}
+				DodajKrog();
+				novaSlika.narisi(this.grap);
 			}
 
 		}
+		System.out.println("konec");
 		
 	}
 
