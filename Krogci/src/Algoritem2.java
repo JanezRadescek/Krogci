@@ -11,6 +11,7 @@ public class Algoritem2 {
 	public int visina;
 	public int sirina;
 	
+	private int zacetniR;
 	private int trenutniR;
 	private int minimalniR;
 	private int sidrox;
@@ -31,8 +32,9 @@ public class Algoritem2 {
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
 		
-		trenutniR = 70;
-		minimalniR = 2;
+		zacetniR = 51;
+		trenutniR = zacetniR;
+		minimalniR = 3;
 		
 		rdeca = new Color(255, 0, 0);
 		modra = new Color(0,255,0);
@@ -52,9 +54,10 @@ public class Algoritem2 {
 	
 	public void glavna()
 	{
-		for(;trenutniR >= minimalniR; trenutniR -= 4)
+		for(;trenutniR >= minimalniR + 4; trenutniR -= 2)
 		{
-			for(int i = 0; i < (51 - trenutniR)*1000; i++)
+			
+			for(int i = 0; i < (zacetniR - trenutniR)*(zacetniR - trenutniR)*100; i++)
 			{
 				novoSidro();
 				if (preveriSidro())
@@ -68,6 +71,36 @@ public class Algoritem2 {
 				
 			}
 		}
+		trenutniR = 4;
+		for (int j = 0; j < 200000; j++)
+		{
+			novoSidro();
+			if (preveriSidro())
+			{
+				povprecnaBarva();
+				if (preveriOdstopanje())
+				{
+					DodajKrog();
+				}
+			}
+
+		}
+
+		trenutniR = 2;
+		for (int j = 0; j < 2000000; j++)
+		{
+			novoSidro();
+			if (preveriSidro())
+			{
+				povprecnaBarva();
+				if (preveriOdstopanje())
+				{
+					DodajKrog();
+				}
+			}
+
+		}
+		
 	}
 
 	private void novoSidro() {
@@ -187,12 +220,12 @@ public class Algoritem2 {
 				}
 			}
 		}
-		System.out.println(stevec);
-		System.out.println(stevecOdstopanj);
+		//System.out.println(stevec);
+		//System.out.println(stevecOdstopanj);
 		double procentOdstopa = (stevecOdstopanj / (double) stevec);
-		System.out.println(procentOdstopa);
+		//System.out.println(procentOdstopa);
 		
-		if (procentOdstopa < 0.05)
+		if (procentOdstopa < 0.2)
 		{
 			return true;
 		}

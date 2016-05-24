@@ -61,7 +61,8 @@ public class Okno extends JFrame {
 				pack();
 				algoritem = new Algoritem2(orgSlika, 30, 10, 10);
 				novaSlika = algoritem.novaSlika;
-				algoritem.narisi(g);
+				novaSlika.narisi(g);
+				//algoritem.narisi(g);
 			}
 		});
 		mnFile.add(mntmLoad);

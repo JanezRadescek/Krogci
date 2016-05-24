@@ -10,7 +10,8 @@ public class NovaSlika
 	{
 		for (Krogec k: slika)
 		{
-			g.fillOval(k.x, k.y, k.x + 2*k.r, k.y + 2*k.r);
+			g.setColor(k.barva);
+			g.fillOval(k.x, k.y, 2*k.r, 2*k.r);
 		}
 	}
 }
