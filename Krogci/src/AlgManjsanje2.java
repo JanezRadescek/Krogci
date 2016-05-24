@@ -12,8 +12,8 @@ public class AlgManjsanje2
 	private final int minR;
 	private final int visina;
 	private final int sirina;
-	private final int odstopanjeRGB; //koliko se lahko pixel razlikuje da je še vredu
-	private final int odstopanjePix; //procenti dovoljenega  števila napaènih pixlov
+	private final int odstopanjeRGB; //koliko se lahko pixel razlikuje da je Å¡e vredu
+	private final int odstopanjePix; //procenti dovoljenega  Å¡tevila napaÄnih pixlov
 	private Color povprecnaBarva;
 	private int xsidro;
 	private int ysidro;
@@ -46,13 +46,15 @@ public class AlgManjsanje2
 		yZeObdelani = new ArrayList<Integer>();
 		konecVrstice = false;
 		smoNarisali = false;
+		
+		System.out.println("pred glavno");
 				
 		glavna();
 		
 		System.out.println("za glavno");
 	}
 
-	//išèe nove krogce in jih nariše dokler ne pride do konca
+	//iÅ¡Äe nove krogce in jih nariÅ¡e dokler ne pride do konca
 	private void glavna() 
 	{
 		while(! konec)
@@ -69,7 +71,7 @@ public class AlgManjsanje2
 		}
 	}
 
-	// poišèe x,y kjer bomo lahko zagotovo naredili vsaj min krog
+	// poiÅ¡Äe x,y kjer bomo lahko zagotovo naredili vsaj min krog
 	private void novoSidro() 
 	{
 		while(xkandidat < sirina - minR)
@@ -82,6 +84,7 @@ public class AlgManjsanje2
 					ysidro = y;
 					
 					smoNarisali = true;
+					System.out.println("najdeno sidro" + xsidro + " : " + ysidro);
 					
 					return;
 				}
@@ -94,7 +97,7 @@ public class AlgManjsanje2
 		
 	}
 	
-	//ko pridemo do konca vrstice je lahko konec ali pa so kašni predeli ostali
+	//ko pridemo do konca vrstice je lahko konec ali pa so kaÅ¡ni predeli ostali
 	private void konecVrstice() 
 	{
 		if(smoNarisali)
@@ -112,14 +115,17 @@ public class AlgManjsanje2
 	}
 
 	//sidro ni znano
-	//preveri èe je prostora vsaj za min krog
+	//preveri Äe je prostora vsaj za min krog
 	private boolean lahkoMin() {
-		// TODO Auto-generated method stub
-		return false;
+		int treR = trenutniR;
+		trenutniR = minR;
+		boolean r = niObdelano();
+		trenutniR = treR;
+		return r;
 	}
 
 	//sidro je znano
-	//zmanjšuje radij dokler ne najde pravega, èe ni drugega min vseeno nariše.
+	//zmanjÅ¡uje radij dokler ne najde pravega, Äe ni drugega min vseeno nariÅ¡e.
 	private void manjsajKrog() 
 	{
 		while(trenutniR >= minR)
@@ -148,16 +154,30 @@ public class AlgManjsanje2
 	}
 
 	//sidro je znano
-	// èe èe trenutni krog zadostuje barvnim pogojem
+	// Äe Äe trenutni krog zadostuje barvnim pogojem
+	/*
+	
 	private boolean barvniPogoji() 
 	{
 		izracunajPovprecnoBarvo();
-		
+		int maxPix = (int)((3.14/4)*trenutniR*trenutniR*odstopanjePix/100);
+		int n = 0;
+		int red = 0, green = 0, blue = 0, alpha = 0;
+				
 		for(int x = xsidro; x<= xsidro + 2*trenutniR; x++)
 		{
 			for(int y = ysidro; y<= ysidro + 2*trenutniR; y++)
 			{
-				
+				if(Metrika.razdalja(x, y, x+trenutniR, y+trenutniR) <= trenutniR)
+				{
+					long rgb = orgSlika.image.getRGB(x, y);
+					alpha = (int)((rgb >> 24) & 0x000000FF);
+					red = (int)((rgb >> 16) & 0x000000FF);
+					green = (int)((rgb >>8 ) & 0x000000FF);
+					blue = (int)((rgb) & 0x000000FF);
+					
+					
+				}
 			}
 				
 		}
@@ -165,18 +185,93 @@ public class AlgManjsanje2
 		return false;
 	}
 
-	//sidro je znano
-	//preveri èe trenutni krog ne leži na kakšnem že narejenm krogu
-	private boolean niObdelano() {
-		// TODO Auto-generated method stub
+	*/
+	
+	//vidova
+	//sidro znano
+	private boolean barvniPogoji()
+	{
+		int odstop = 0;
+		int stevec = 0;
+		int stevecOdstopanj = 0;
+		
+		for (int i = xsidro; i < xsidro + trenutniR*2; i++)
+		{
+			for(int j = ysidro; j < ysidro + trenutniR*2; j++)
+			{
+				if ((i - (xsidro + trenutniR))*(i - (xsidro + trenutniR)) + (j - (ysidro + trenutniR))*(j - (ysidro + trenutniR)) <= trenutniR*trenutniR)
+				{
+					int colour = orgSlika.image.getRGB(i, j);
+					
+					int alpha = (colour>>24) & 0xff;
+					int  red = (colour & 0x00ff0000) >> 16;
+					int  green = (colour & 0x0000ff00) >> 8;
+					int  blue = colour & 0x000000ff;
+					
+					int pR = povprecnaBarva.getRed();
+					int pM = povprecnaBarva.getBlue();
+					int pZ = povprecnaBarva.getGreen();
+					int pA = povprecnaBarva.getAlpha();
+					
+					odstop += Math.abs(red - pR);
+					odstop += Math.abs(green - pZ);
+					odstop += Math.abs(blue - pM);
+					odstop += Math.abs(alpha - pA);
+					
+					
+					if (odstop > 20)
+					{
+						stevecOdstopanj += 1;
+					}
+					odstop = 0;
+					stevec += 1;
+					
+				}
+			}
+		}
+		//System.out.println(stevec);
+		//System.out.println(stevecOdstopanj);
+		double procentOdstopa = (stevecOdstopanj / (double) stevec);
+		//System.out.println(procentOdstopa);
+		
+		if (procentOdstopa < 0.3)
+		{
+			return true;
+		}
 		return false;
+	}
+	
+	
+	//sidro je znano
+	//preveri Äe trenutni krog ne leÅ¾i na kakÅ¡nem Å¾e narejenm krogu
+	private boolean niObdelano() {
+		
+		for(int x = xsidro; x<= xsidro + 2*trenutniR; x++)
+		{
+			for(int y = ysidro; x<=ysidro + 2*trenutniR; y++)
+			{
+				if(Metrika.razdalja(x, y, xsidro+trenutniR, ysidro+trenutniR) <= trenutniR)
+				{
+					if((x>=sirina) || (y>= visina))
+					{
+						return false;
+					}
+					if(mreza[x][y]) 
+					{
+						return false;
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 
 	//sidro je znano
-	//povpreèna barva trenutnega kroga
+	//povpreÄna barva trenutnega kroga
 	private void izracunajPovprecnoBarvo() 
 	{
-		int red = 0, green = 0, blue = 0;
+		int red = 0, green = 0, blue = 0, alpha = 0;
 		int n = 0;
 		for(int x = xsidro; x <= xsidro + 2*trenutniR; x++)
 		{
@@ -185,6 +280,7 @@ public class AlgManjsanje2
 				if (Metrika.razdalja(x, y, x+trenutniR, y+trenutniR) <= trenutniR)
 				{
 					long rgb = orgSlika.image.getRGB(x, y);
+					alpha += (rgb >> 24) & 0x000000FF;
 					red += (rgb >> 16) & 0x000000FF;
 					green += (rgb >>8 ) & 0x000000FF;
 					blue += (rgb) & 0x000000FF;
@@ -192,8 +288,9 @@ public class AlgManjsanje2
 				}
 			}
 		}
-		int povRed = (int)(red/n), povGreen = (int)(green/n), povBlue = (int)(blue/n);
-		povprecnaBarva = new Color(povRed, povGreen, povBlue);
+		int povRed = (int)(red/n), povGreen = (int)(green/n), povBlue = (int)(blue/n), povAlpha = (int)(alpha/n);
+		povprecnaBarva = new Color(povRed, povGreen, povBlue, povAlpha);
 		
 	}
+
 }
