@@ -76,7 +76,11 @@ public class Okno extends JFrame {
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
+				String text = path.getText();
+				String pot = "C:\\Users\\MaliMsi\\Desktop\\projektslike\\";
+				pot = pot.concat(text);
+				System.out.println(pot);
+				orgSlika = new OrgSlika(pot);
 				//Graphics g = panel.getGraphics();
 				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
 				panel.setPreferredSize(velikost);

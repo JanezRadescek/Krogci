@@ -72,7 +72,7 @@ public class Algoritem2 {
 			}
 		}
 		trenutniR = 4;
-		for (int j = 0; j < 200000; j++)
+		for (int j = 0; j < 20000; j++)
 		{
 			novoSidro();
 			if (preveriSidro())
@@ -87,7 +87,7 @@ public class Algoritem2 {
 		}
 
 		trenutniR = 2;
-		for (int j = 0; j < 2000000; j++)
+		for (int j = 0; j < 1000000; j++)
 		{
 			novoSidro();
 			if (preveriSidro())
@@ -204,13 +204,15 @@ public class Algoritem2 {
 					int pR = povprecnaB.getRed();
 					int pM = povprecnaB.getBlue();
 					int pZ = povprecnaB.getGreen();
+					int pA = povprecnaB.getAlpha();
 					
-					odstop += Math.abs((red - povprecnaB.getRed()));
-					odstop += Math.abs(green - povprecnaB.getGreen());
-					odstop += Math.abs(blue - povprecnaB.getBlue());
+					odstop += Math.abs(red - pR);
+					odstop += Math.abs(green - pZ);
+					odstop += Math.abs(blue - pM);
+					odstop += Math.abs(alpha - pA);
 					
 					
-					if (odstop > 10)
+					if (odstop > 20)
 					{
 						stevecOdstopanj += 1;
 					}
@@ -225,7 +227,7 @@ public class Algoritem2 {
 		double procentOdstopa = (stevecOdstopanj / (double) stevec);
 		//System.out.println(procentOdstopa);
 		
-		if (procentOdstopa < 0.2)
+		if (procentOdstopa < 0.3)
 		{
 			return true;
 		}
