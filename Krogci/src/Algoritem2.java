@@ -31,7 +31,7 @@ public class Algoritem2 {
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
 		
-		trenutniR = 20;
+		trenutniR = 70;
 		minimalniR = 2;
 		
 		rdeca = new Color(255, 0, 0);
@@ -52,15 +52,18 @@ public class Algoritem2 {
 	
 	public void glavna()
 	{
-		for(;trenutniR >= minimalniR; trenutniR -= 3)
+		for(;trenutniR >= minimalniR; trenutniR -= 4)
 		{
-			for(int i = 0; i < 15000; i++)
+			for(int i = 0; i < (51 - trenutniR)*1000; i++)
 			{
 				novoSidro();
 				if (preveriSidro())
 				{
 					povprecnaBarva();
-					DodajKrog();
+					if (preveriOdstopanje())
+					{
+						DodajKrog();
+					}
 				}
 				
 			}
@@ -71,8 +74,6 @@ public class Algoritem2 {
 		rn = new Random();
 		sidrox = rn.nextInt(sirina - trenutniR*2 - 2) + 1;
 		sidroy = rn.nextInt(visina - trenutniR*2 - 2) + 1;
-		System.out.println(sidrox);
-		System.out.println(sidroy);
 		
 	}
 
@@ -146,6 +147,56 @@ public class Algoritem2 {
 		}
 		Color barva = new Color(povpR/stevec, povpZ/stevec, povpM/stevec, povpA/stevec);
 		povprecnaB = barva;
+	}
+	
+	private boolean preveriOdstopanje()
+	{
+		int odstop = 0;
+		int stevec = 0;
+		int stevecOdstopanj = 0;
+		
+		for (int i = sidrox; i < sidrox + trenutniR*2; i++)
+		{
+			for(int j = sidroy; j < sidroy + trenutniR*2; j++)
+			{
+				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) <= trenutniR*trenutniR)
+				{
+					int colour = orgSlika.image.getRGB(i, j);
+					
+					int alpha = (colour>>24) & 0xff;
+					int  red = (colour & 0x00ff0000) >> 16;
+					int  green = (colour & 0x0000ff00) >> 8;
+					int  blue = colour & 0x000000ff;
+					
+					int pR = povprecnaB.getRed();
+					int pM = povprecnaB.getBlue();
+					int pZ = povprecnaB.getGreen();
+					
+					odstop += Math.abs((red - povprecnaB.getRed()));
+					odstop += Math.abs(green - povprecnaB.getGreen());
+					odstop += Math.abs(blue - povprecnaB.getBlue());
+					
+					
+					if (odstop > 10)
+					{
+						stevecOdstopanj += 1;
+					}
+					odstop = 0;
+					stevec += 1;
+					
+				}
+			}
+		}
+		System.out.println(stevec);
+		System.out.println(stevecOdstopanj);
+		double procentOdstopa = (stevecOdstopanj / (double) stevec);
+		System.out.println(procentOdstopa);
+		
+		if (procentOdstopa < 0.05)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public void narisi(Graphics g)
