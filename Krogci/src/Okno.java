@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -6,13 +7,18 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JToolBar;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
+
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,8 +33,7 @@ public class Okno extends JFrame {
 	private JPanel contentPane;
 	private JTextField path;
 	private OrgSlika orgSlika;
-	private NovaSlika novaSlika;
-	private Algoritem2 algoritem;
+	private Thread vlakno;
 
 	/**
 	 * Create the frame.
@@ -41,9 +46,10 @@ public class Okno extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setBackground(Color.BLACK);
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.CENTER);
+		KrogciPanel krogciPanel = new KrogciPanel();
+		contentPane.add(krogciPanel, BorderLayout.CENTER);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -54,20 +60,18 @@ public class Okno extends JFrame {
 		JMenuItem mntmLoad = new JMenuItem("Load");
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(path.getText());
-				//orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
-				Graphics g = panel.getGraphics();
 				
-				//Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
-				
-				//panel.setSize(orgSlika.image.getHeight(), orgSlika.image.getWidth());
-				//panel.setPreferredSize(velikost);
-				//orgSlika.narisi(g);
+				String text = path.getText();
+				String pot = "C:\\Users\\MaliMsi\\Desktop\\projektSlike\\";
+				pot = pot.concat(text);
+				pot = pot.concat(".jpg");
+				System.out.println(pot);
+				orgSlika = new OrgSlika(pot);
+				//Graphics g = panel.getGraphics();
+				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
+				krogciPanel.setPreferredSize(velikost);
 				pack();
-				algoritem = new Algoritem2(orgSlika, 30, 10, 10, g);
-				novaSlika = algoritem.novaSlika;
-				novaSlika.narisi(g);
-				//algoritem.narisi(g);
+				
 			}
 		});
 		mnFile.add(mntmLoad);
@@ -76,14 +80,14 @@ public class Okno extends JFrame {
 		mntmSave.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
-			{
+			{	
+				
+				
 				BufferedImage fileSlika = new BufferedImage(orgSlika.image.getWidth(), orgSlika.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			    Graphics gg = fileSlika.getGraphics();
-			    novaSlika.narisi(gg);
 			    try 
 			    {
 			    	System.out.println("shranjuje");
-			    	ImageIO.write(fileSlika, "PNG", new File("yourImageName.PNG"));
+			    	ImageIO.write(fileSlika, "PNG", new File("yourImageName2.PNG"));
 			    } 
 			    catch (IOException e1)
 			    {
@@ -104,16 +108,22 @@ public class Okno extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				String text = path.getText();
-				String pot = "C:\\Users\\MaliMsi\\Desktop\\projektslike\\";
-				pot = pot.concat(text);
-				pot = pot.concat(".jpg");
-				System.out.println(pot);
-				orgSlika = new OrgSlika(pot);
-				//Graphics g = panel.getGraphics();
-				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
-				panel.setPreferredSize(velikost);
-				pack();
+				
+				System.out.println(path.getText());
+				//orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
+				//Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
+				
+				//panel.setSize(orgSlika.image.getHeight(), orgSlika.image.getWidth());
+				//panel.setPreferredSize(velikost);
+				//orgSlika.narisi(g);
+				
+				if (vlakno == null)
+				{
+					vlakno = new Thread(new Algoritem2(orgSlika, 30, 10, 10, krogciPanel));
+					vlakno.start();
+				}
+				//novaSlika.narisi(g);
+				//algoritem.narisi(g);
 				
 				
 			}

@@ -2,7 +2,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 
-public class NovaSlika 
+public class SlikaIzKrogov
 {
 	ArrayList<Krogec> slika = new ArrayList<Krogec>();
 	

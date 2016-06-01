@@ -5,7 +5,7 @@ import java.util.Collections;
 public class AlgManjsanje2 
 {
 	public OrgSlika orgSlika;
-	public NovaSlika novaSlika;
+	public SlikaIzKrogov novaSlika;
 	
 	private final int maxR;
 	private int trenutniR;
@@ -28,7 +28,7 @@ public class AlgManjsanje2
 	public AlgManjsanje2(OrgSlika orgSlika, int maxR, int odstopanjeRGB, int odstopanjePix) 
 	{
 		this.orgSlika = orgSlika;
-		novaSlika = new NovaSlika();
+		novaSlika = new SlikaIzKrogov();
 		
 		trenutniR = maxR;
 		minR = 5;

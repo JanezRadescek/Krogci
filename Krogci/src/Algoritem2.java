@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
-public class Algoritem2 {
+public class Algoritem2 implements Runnable {
 	
 	public OrgSlika orgSlika;
-	public NovaSlika novaSlika;
+	public SlikaIzKrogov slikaIzKrogov;
 	public int visina;
 	public int sirina;
 	
@@ -22,14 +22,14 @@ public class Algoritem2 {
 	public Color rdeca;
 	public Color modra;
 	public Color povprecnaB;
-	public Graphics grap;
+	public KrogciPanel grap;
 	
 	private boolean mreza [][];
 		
-	public Algoritem2(OrgSlika orgSlika, int maxR, int odstopanjeRGB, int odstopanjePix, Graphics grap) 
+	public Algoritem2(OrgSlika orgSlika, int maxR, int odstopanjeRGB, int odstopanjePix, KrogciPanel panel) 
 	{
 		this.orgSlika = orgSlika;
-		novaSlika = new NovaSlika();
+		slikaIzKrogov = new SlikaIzKrogov();
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
 		
@@ -39,7 +39,7 @@ public class Algoritem2 {
 		
 		rdeca = new Color(255, 0, 0);
 		modra = new Color(0,255,0);
-		this.grap = grap;
+		this.grap = panel;
 		
 		mreza = new boolean[sirina][visina]; //v mrezo vpisemo vse vrednosti true, kar pomeni, da imamo prosto mesto za risanje krogca
 		for(int i = 0; i < sirina; i++)
@@ -51,12 +51,11 @@ public class Algoritem2 {
 			
 		}
 		
-		glavna();
 	}
 	
-	public void glavna()
+	public void run()
 	{
-		for(;trenutniR >= minimalniR + 4; trenutniR -= 2)
+		for(;trenutniR >= minimalniR + 2; trenutniR -= 1)
 		{
 			
 			for(int i = 0; i < (zacetniR - trenutniR)*(zacetniR - trenutniR)*50; i++)
@@ -67,50 +66,40 @@ public class Algoritem2 {
 					povprecnaBarva();
 					if (preveriOdstopanje())
 					{
-						DodajKrog();
-						novaSlika.narisi(this.grap);
+						dodajKrog();
 					}
 				}
 				
 			}
 		}
 		trenutniR = 4;
-		for (int j = 0; j < 200000; j++)
-		{
+		for (int j = 0; j < 20000; j++)
 			novoSidro();
 			if (preveriSidro())
-			{
 				povprecnaBarva();
-				
-				DodajKrog();
-				novaSlika.narisi(this.grap);
-				
-			}
-
-		}
+				if (preveriOdstopanje())
+					dodajKrog();
 		
 		trenutniR = 3;
-		for (int j = 0; j < 500000; j++)
+		for (int j = 0; j < 50000; j++)
 		{
 			novoSidro();
 			if (preveriSidro())
 			{
 				povprecnaBarva();
-				DodajKrog();
-				novaSlika.narisi(this.grap);
+				dodajKrog();
 			}
 
 		}
 
 		trenutniR = 2;
-		for (int j = 0; j < 1000000; j++)
+		for (int j = 0; j < 100000; j++)
 		{
 			novoSidro();
 			if (preveriSidro())
 			{
 				povprecnaBarva();
-				DodajKrog();
-				novaSlika.narisi(this.grap);
+				dodajKrog();
 			}
 
 		}
@@ -125,16 +114,16 @@ public class Algoritem2 {
 		
 	}
 
-	private void DodajKrog() {
+	private void dodajKrog() {
 		
-		novaSlika.slika.add(new Krogec(sidrox,sidroy,trenutniR,povprecnaB)); //doda krog v seznam krogov, ki se bodo kasneje narisali
+		grap.dodajKrogec(new Krogec(sidrox,sidroy,trenutniR,povprecnaB)); //doda krog v seznam krogov, ki se bodo kasneje narisali
 		
 		//v mrezo vpisemo katera polja so ze zasedena
 		for (int i = sidrox; i < sidrox + trenutniR*2; i++)
 		{
 			for(int j = sidroy; j < sidroy + trenutniR*2; j++)
 			{
-				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) <= trenutniR*trenutniR)
+				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) < trenutniR*trenutniR)
 				{
 					mreza[i][j] = false;
 				}
@@ -151,7 +140,7 @@ public class Algoritem2 {
 		{
 			for(int j = sidroy; j < sidroy + trenutniR*2; j++)
 			{
-				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) <= trenutniR*trenutniR)
+				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) < trenutniR*trenutniR)
 				{
 					if(mreza[i][j] == false)
 					{
@@ -175,7 +164,7 @@ public class Algoritem2 {
 		{
 			for(int j = sidroy; j < sidroy + trenutniR*2; j++)
 			{
-				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) <= trenutniR*trenutniR)
+				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) < trenutniR*trenutniR)
 				{
 					int colour = orgSlika.image.getRGB(i, j);
 					
@@ -207,7 +196,7 @@ public class Algoritem2 {
 		{
 			for(int j = sidroy; j < sidroy + trenutniR*2; j++)
 			{
-				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) <= trenutniR*trenutniR)
+				if ((i - (sidrox + trenutniR))*(i - (sidrox + trenutniR)) + (j - (sidroy + trenutniR))*(j - (sidroy + trenutniR)) < trenutniR*trenutniR)
 				{
 					int colour = orgSlika.image.getRGB(i, j);
 					
@@ -227,7 +216,7 @@ public class Algoritem2 {
 					odstop += Math.abs(alpha - pA);
 					
 					
-					if (odstop > 10)
+					if (odstop > 30)
 					{
 						stevecOdstopanj += 1;
 					}
@@ -242,20 +231,12 @@ public class Algoritem2 {
 		double procentOdstopa = (stevecOdstopanj / (double) stevec);
 		//System.out.println(procentOdstopa);
 		
-		if (procentOdstopa < 0.1)
+		if (procentOdstopa < 0.05)
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	public void narisi(Graphics g)
-	{
-		for (Krogec k: novaSlika.slika)
-		{
-			g.setColor(k.barva);
-			g.fillOval(k.x, k.y, 2*k.r, 2*k.r);
-		}
-	}
 	
 }
