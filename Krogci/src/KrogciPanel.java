@@ -33,4 +33,11 @@ public class KrogciPanel extends JPanel {
 		repaint();
 	}
 
+	public ArrayList<Krogec> getKrogci() 
+	{
+		return krogci;
+	}
+	
+	
+
 }

@@ -7,8 +7,10 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.GridBagLayout;
+import java.awt.Panel;
 
 import javax.swing.JToolBar;
 
@@ -22,11 +24,13 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 public class Okno extends JFrame {
 
@@ -34,6 +38,8 @@ public class Okno extends JFrame {
 	private JTextField path;
 	private OrgSlika orgSlika;
 	private Thread vlakno;
+	JFileChooser chooser = new JFileChooser();
+    
 
 	/**
 	 * Create the frame.
@@ -99,6 +105,74 @@ public class Okno extends JFrame {
 		});
 		
 		mnFile.add(mntmSave);
+		
+		JMenuItem mntmNewLoad = new JMenuItem("New Load");
+		mntmNewLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{	
+				
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				        "JPG & GIF Images", "jpg", "gif");
+				chooser.setFileFilter(filter);
+				int returnVal = chooser.showOpenDialog(contentPane);
+				if(returnVal == JFileChooser.APPROVE_OPTION) 
+				{
+				    System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
+				    String path = chooser.getSelectedFile().getAbsolutePath();
+				    orgSlika = new OrgSlika(path);
+				    Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
+					krogciPanel.setPreferredSize(velikost);
+					pack();
+				}
+			   
+			}
+		});
+		mnFile.add(mntmNewLoad);
+		
+		JMenuItem mntmNewSafe = new JMenuItem("New Safe");
+		mntmNewSafe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				
+				 int retrival = chooser.showSaveDialog(null);
+				 if (retrival == JFileChooser.APPROVE_OPTION) {
+				    try 
+				    {
+				    	
+				    	BufferedImage fileSlika = new BufferedImage(orgSlika.image.getWidth(), orgSlika.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					    Graphics g = fileSlika.getGraphics();
+				    	try 
+					    {
+					    	System.out.println("shranjuje");
+					    	g.setColor(new Color(0,0,0));
+					    	g.fillRect(0, 0, orgSlika.image.getWidth(), orgSlika.image.getWidth());
+					    	for (Krogec k: krogciPanel.getKrogci())
+							{
+								g.setColor(k.barva);
+								g.fillOval(k.x, k.y, 2*k.r, 2*k.r);
+							}
+					    						    	
+					    	ImageIO.write(fileSlika, "PNG", chooser.getSelectedFile());
+					    } 
+					    catch (IOException e1)
+					    {
+					    	System.out.println("ne shrani");
+					    	e1.printStackTrace();
+					    }
+				    	
+				        
+				    } 
+				    catch (Exception ex) 
+				    {
+				        ex.printStackTrace();
+				    }
+				}
+				
+				
+				
+			}
+		});
+		mnFile.add(mntmNewSafe);
 		
 		JMenu mnSettings = new JMenu("Settings");
 		menuBar.add(mnSettings);
