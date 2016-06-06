@@ -10,6 +10,7 @@ public class Algoritem2 implements Runnable {
 	public SlikaIzKrogov slikaIzKrogov;
 	public int visina;
 	public int sirina;
+	private boolean konec;
 	
 	private int zacetniR;
 	private int trenutniR;
@@ -19,8 +20,6 @@ public class Algoritem2 implements Runnable {
 	
 	private Random rn;
 	
-	public Color rdeca;
-	public Color modra;
 	public Color povprecnaB;
 	public KrogciPanel grap;
 	
@@ -37,8 +36,8 @@ public class Algoritem2 implements Runnable {
 		trenutniR = zacetniR;
 		minimalniR = 3;
 		
-		rdeca = new Color(255, 0, 0);
-		modra = new Color(0,255,0);
+		konec = false;
+		
 		this.grap = panel;
 		
 		mreza = new boolean[sirina][visina]; //v mrezo vpisemo vse vrednosti true, kar pomeni, da imamo prosto mesto za risanje krogca
@@ -55,7 +54,7 @@ public class Algoritem2 implements Runnable {
 	
 	public void run()
 	{
-		for(;trenutniR >= minimalniR + 2; trenutniR -= 1)
+		for(;(trenutniR >= minimalniR + 2) && (!konec); trenutniR -= 1)
 		{
 			
 			for(int i = 0; i < (zacetniR - trenutniR)*(zacetniR - trenutniR)*50; i++)
@@ -73,7 +72,7 @@ public class Algoritem2 implements Runnable {
 			}
 		}
 		trenutniR = 4;
-		for (int j = 0; j < 20000; j++)
+		for (int j = 0; (j < 20000)&& (!konec); j++)
 			novoSidro();
 			if (preveriSidro())
 				povprecnaBarva();
@@ -81,7 +80,7 @@ public class Algoritem2 implements Runnable {
 					dodajKrog();
 		
 		trenutniR = 3;
-		for (int j = 0; j < 50000; j++)
+		for (int j = 0; (j < 50000)&& (!konec); j++)
 		{
 			novoSidro();
 			if (preveriSidro())
@@ -93,7 +92,7 @@ public class Algoritem2 implements Runnable {
 		}
 
 		trenutniR = 2;
-		for (int j = 0; j < 100000; j++)
+		for (int j = 0; (j < 100000)&& (!konec); j++)
 		{
 			novoSidro();
 			if (preveriSidro())
@@ -236,6 +235,11 @@ public class Algoritem2 implements Runnable {
 			return true;
 		}
 		return false;
+	}
+
+
+	public void koncaj() {
+		this.konec = true;
 	}
 	
 	

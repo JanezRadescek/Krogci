@@ -38,6 +38,7 @@ public class Okno extends JFrame {
 	private JTextField path;
 	private OrgSlika orgSlika;
 	private Thread vlakno;
+	private Algoritem2 algoritem;
 	JFileChooser chooser = new JFileChooser();
     
 
@@ -48,14 +49,16 @@ public class Okno extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
-		contentPane = new JPanel();
+		/*contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.setBackground(Color.BLACK);
+		*/
 		
 		KrogciPanel krogciPanel = new KrogciPanel();
-		contentPane.add(krogciPanel, BorderLayout.CENTER);
+		setContentPane(krogciPanel);
+		//contentPane.add(krogciPanel, BorderLayout.CENTER);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -98,7 +101,7 @@ public class Okno extends JFrame {
 			    catch (IOException e1)
 			    {
 			    	System.out.println("ne shrani");
-			    	e1.printStackTrace();
+			    	//e1.printStackTrace();
 			    }
 			}
 			
@@ -111,12 +114,31 @@ public class Okno extends JFrame {
 			public void actionPerformed(ActionEvent e) 
 			{	
 				
+				
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				        "JPG & GIF Images", "jpg", "gif");
 				chooser.setFileFilter(filter);
-				int returnVal = chooser.showOpenDialog(contentPane);
+				int returnVal = chooser.showOpenDialog(krogciPanel);
 				if(returnVal == JFileChooser.APPROVE_OPTION) 
 				{
+					
+					if (vlakno != null)
+					{
+						algoritem.koncaj();
+						try {
+							vlakno.join();
+							vlakno = null;
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							//e1.printStackTrace();
+						}
+							
+						
+					}
+					
+					krogciPanel.pobrisiSliko();
+					krogciPanel.repaint();
+					
 				    System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
 				    String path = chooser.getSelectedFile().getAbsolutePath();
 				    orgSlika = new OrgSlika(path);
@@ -157,14 +179,14 @@ public class Okno extends JFrame {
 					    catch (IOException e1)
 					    {
 					    	System.out.println("ne shrani");
-					    	e1.printStackTrace();
+					    	//e1.printStackTrace();
 					    }
 				    	
 				        
 				    } 
 				    catch (Exception ex) 
 				    {
-				        ex.printStackTrace();
+				        //ex.printStackTrace();
 				    }
 				}
 				
@@ -193,7 +215,8 @@ public class Okno extends JFrame {
 				
 				if (vlakno == null)
 				{
-					vlakno = new Thread(new Algoritem2(orgSlika, 30, 10, 10, krogciPanel));
+					algoritem = new Algoritem2(orgSlika, 30, 10, 10, krogciPanel);
+					vlakno = new Thread(algoritem);
 					vlakno.start();
 				}
 				//novaSlika.narisi(g);
