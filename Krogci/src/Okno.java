@@ -6,13 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javax.swing.JMenuBar;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JTextField;
-
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -26,7 +22,6 @@ public class Okno extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 8103785570254760021L;
-	private JTextField path;
 	private OrgSlika orgSlika;
 	private Thread vlakno;
 	private Algoritem2 algoritem;
@@ -46,55 +41,25 @@ public class Okno extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
-		
-		JMenuItem mntmLoad = new JMenuItem("Load");
-		mntmLoad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				String text = path.getText();
-				String pot = "C:\\Users\\MaliMsi\\Desktop\\projektSlike\\";
-				pot = pot.concat(text);
-				pot = pot.concat(".jpg");
-				System.out.println(pot);
-				orgSlika = new OrgSlika(pot);
-				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
-				krogciPanel.setPreferredSize(velikost);
-				pack();
-				
-			}
-		});
-		mnFile.add(mntmLoad);
-		
-		JMenuItem mntmSave = new JMenuItem("Save");
-		mntmSave.addActionListener(new ActionListener() 
+		JButton btnStart = new JButton("Start");
+		btnStart.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent e)
-			{	
-				
-				
-				BufferedImage fileSlika = new BufferedImage(orgSlika.image.getWidth(), orgSlika.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			    try 
-			    {
-			    	System.out.println("shranjuje");
-			    	ImageIO.write(fileSlika, "PNG", new File("yourImageName2.PNG"));
-			    } 
-			    catch (IOException e1)
-			    {
-			    	System.out.println("ne shrani");
-			    }
-			}
-			
-		});
-		
-		mnFile.add(mntmSave);
-		
-		JMenuItem mntmNewLoad = new JMenuItem("New Load");
-		mntmNewLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
-			{	
-				
+			{
+				if (vlakno == null)
+				{
+					algoritem = new Algoritem2(orgSlika, 30, 10, 10, krogciPanel);
+					vlakno = new Thread(algoritem);
+					vlakno.start();
+				}
+			}
+		});
+		menuBar.add(btnStart);
+		
+		JButton btnNewLoad = new JButton("New Load");
+		btnNewLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
 				
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				        "JPG & GIF Images", "jpg", "gif");
@@ -119,24 +84,21 @@ public class Okno extends JFrame {
 					krogciPanel.pobrisiSliko();
 					krogciPanel.repaint();
 					
-				    System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
 				    String path = chooser.getSelectedFile().getAbsolutePath();
 				    orgSlika = new OrgSlika(path);
 				    Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
 					krogciPanel.setPreferredSize(velikost);
 					pack();
 				}
-			   
 			}
 		});
-		mnFile.add(mntmNewLoad);
+		menuBar.add(btnNewLoad);
 		
-		JMenuItem mntmNewSafe = new JMenuItem("New Safe");
-		mntmNewSafe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) 
+		JButton btnNewSafe = new JButton("New Safe");
+		btnNewSafe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
 			{
-				
-				 int retrival = chooser.showSaveDialog(null);
+				int retrival = chooser.showSaveDialog(null);
 				 if (retrival == JFileChooser.APPROVE_OPTION) {
 				    try 
 				    {
@@ -167,34 +129,9 @@ public class Okno extends JFrame {
 				    	
 				    }
 				}
-				
-				
-				
 			}
 		});
-		mnFile.add(mntmNewSafe);
-		
-		JMenu mnSettings = new JMenu("Settings");
-		menuBar.add(mnSettings);
-		
-		JButton btnStart = new JButton("Start");
-		btnStart.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				if (vlakno == null)
-				{
-					algoritem = new Algoritem2(orgSlika, 30, 10, 10, krogciPanel);
-					vlakno = new Thread(algoritem);
-					vlakno.start();
-				}
-			}
-		});
-		menuBar.add(btnStart);
-		
-		path = new JTextField();
-		menuBar.add(path);
-		path.setColumns(10);
+		menuBar.add(btnNewSafe);
 		
 		
 	}
