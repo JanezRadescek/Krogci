@@ -56,7 +56,8 @@ public class KrogciPanel extends JPanel {
 	
 	public void pobrisiSliko()
 	{
-		
+		vrstaKrogcev = new CopyOnWriteArrayList<Krogec>();
+		repaint();
 		//krogci = new ArrayList<Krogec>();
 		System.out.print("slika pobrisana");
 	}
