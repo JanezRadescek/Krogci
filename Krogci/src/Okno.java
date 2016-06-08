@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -26,9 +25,7 @@ public class Okno extends JFrame {
 	private Thread vlakno;
 	private Algoritem2 algoritem;
 	JFileChooser chooser = new JFileChooser();
-    
-
-	/**
+    /**
 	 * Create the frame.
 	 */
 	public Okno() {
@@ -46,17 +43,17 @@ public class Okno extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				if (vlakno == null)
+				if (vlakno == null) 
 				{
 					algoritem = new Algoritem2(orgSlika, 30, 10, 10, krogciPanel);
 					vlakno = new Thread(algoritem);
 					vlakno.start();
 				}
+								
 			}
 		});
-		menuBar.add(btnStart);
 		
-		JButton btnNewLoad = new JButton("New Load");
+		JButton btnNewLoad = new JButton("Load");
 		btnNewLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -94,7 +91,7 @@ public class Okno extends JFrame {
 		});
 		menuBar.add(btnNewLoad);
 		
-		JButton btnNewSafe = new JButton("New Safe");
+		JButton btnNewSafe = new JButton("Safe");
 		btnNewSafe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -132,6 +129,7 @@ public class Okno extends JFrame {
 			}
 		});
 		menuBar.add(btnNewSafe);
+		menuBar.add(btnStart);
 		
 		
 	}
