@@ -1,13 +1,11 @@
 import java.awt.Color;
-import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class Algoritem2 implements Runnable {
 	
 	public OrgSlika orgSlika;
-	public SlikaIzKrogov slikaIzKrogov;
 	public int visina;
 	public int sirina;
 	private boolean konec;
@@ -28,7 +26,6 @@ public class Algoritem2 implements Runnable {
 	public Algoritem2(OrgSlika orgSlika, int maxR, int odstopanjeRGB, int odstopanjePix, KrogciPanel panel) 
 	{
 		this.orgSlika = orgSlika;
-		slikaIzKrogov = new SlikaIzKrogov();
 		visina = orgSlika.image.getHeight();
 		sirina = orgSlika.image.getWidth();
 		
@@ -102,7 +99,8 @@ public class Algoritem2 implements Runnable {
 			}
 
 		}
-		System.out.println("konec");
+		
+		JOptionPane.showMessageDialog(null, "Slika iz krogcev je dokonèana");
 		
 	}
 
@@ -225,10 +223,8 @@ public class Algoritem2 implements Runnable {
 				}
 			}
 		}
-		//System.out.println(stevec);
-		//System.out.println(stevecOdstopanj);
 		double procentOdstopa = (stevecOdstopanj / (double) stevec);
-		//System.out.println(procentOdstopa);
+
 		
 		if (procentOdstopa < 0.05)
 		{

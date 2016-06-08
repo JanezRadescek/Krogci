@@ -1,20 +1,9 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import java.awt.GridBagLayout;
-import java.awt.Panel;
-
-import javax.swing.JToolBar;
-
-import java.awt.GridBagConstraints;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -24,7 +13,6 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -34,7 +22,10 @@ import javax.swing.JFileChooser;
 
 public class Okno extends JFrame {
 
-	private JPanel contentPane;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8103785570254760021L;
 	private JTextField path;
 	private OrgSlika orgSlika;
 	private Thread vlakno;
@@ -49,16 +40,8 @@ public class Okno extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
-		/*contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.setBackground(Color.BLACK);
-		*/
-		
 		KrogciPanel krogciPanel = new KrogciPanel();
 		setContentPane(krogciPanel);
-		//contentPane.add(krogciPanel, BorderLayout.CENTER);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -76,7 +59,6 @@ public class Okno extends JFrame {
 				pot = pot.concat(".jpg");
 				System.out.println(pot);
 				orgSlika = new OrgSlika(pot);
-				//Graphics g = panel.getGraphics();
 				Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
 				krogciPanel.setPreferredSize(velikost);
 				pack();
@@ -101,7 +83,6 @@ public class Okno extends JFrame {
 			    catch (IOException e1)
 			    {
 			    	System.out.println("ne shrani");
-			    	//e1.printStackTrace();
 			    }
 			}
 			
@@ -129,8 +110,7 @@ public class Okno extends JFrame {
 							vlakno.join();
 							vlakno = null;
 						} catch (InterruptedException e1) {
-							// TODO Auto-generated catch block
-							//e1.printStackTrace();
+							
 						}
 							
 						
@@ -165,7 +145,6 @@ public class Okno extends JFrame {
 					    Graphics g = fileSlika.getGraphics();
 				    	try 
 					    {
-					    	System.out.println("shranjuje");
 					    	g.setColor(new Color(0,0,0));
 					    	g.fillRect(0, 0, orgSlika.image.getWidth(), orgSlika.image.getWidth());
 					    	for (Krogec k: krogciPanel.getKrogci())
@@ -179,14 +158,13 @@ public class Okno extends JFrame {
 					    catch (IOException e1)
 					    {
 					    	System.out.println("ne shrani");
-					    	//e1.printStackTrace();
 					    }
 				    	
 				        
 				    } 
 				    catch (Exception ex) 
 				    {
-				        //ex.printStackTrace();
+				    	
 				    }
 				}
 				
@@ -204,25 +182,12 @@ public class Okno extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				
-				System.out.println(path.getText());
-				//orgSlika = new OrgSlika("C:\\Users\\MaliMsi\\Desktop\\Kid_krillin_peace.jpg");
-				//Dimension velikost = new Dimension(orgSlika.image.getWidth(), orgSlika.image.getHeight());
-				
-				//panel.setSize(orgSlika.image.getHeight(), orgSlika.image.getWidth());
-				//panel.setPreferredSize(velikost);
-				//orgSlika.narisi(g);
-				
 				if (vlakno == null)
 				{
 					algoritem = new Algoritem2(orgSlika, 30, 10, 10, krogciPanel);
 					vlakno = new Thread(algoritem);
 					vlakno.start();
 				}
-				//novaSlika.narisi(g);
-				//algoritem.narisi(g);
-				
-				
 			}
 		});
 		menuBar.add(btnStart);
@@ -233,8 +198,6 @@ public class Okno extends JFrame {
 		
 		
 	}
-	
-	
 	
 
 }
