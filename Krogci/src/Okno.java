@@ -91,7 +91,7 @@ public class Okno extends JFrame {
 		});
 		menuBar.add(btnNewLoad);
 		
-		JButton btnNewSafe = new JButton("Safe");
+		JButton btnNewSafe = new JButton("Save");
 		btnNewSafe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
