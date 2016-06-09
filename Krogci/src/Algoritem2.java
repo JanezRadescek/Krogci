@@ -1,8 +1,6 @@
 import java.awt.Color;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 public class Algoritem2 implements Runnable {
 	
 	public OrgSlika orgSlika;
@@ -99,8 +97,6 @@ public class Algoritem2 implements Runnable {
 			}
 
 		}
-		
-		JOptionPane.showMessageDialog(null, "Slika iz krogcev je dokonèana");
 		
 	}
 
